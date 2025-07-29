@@ -1,0 +1,94 @@
+.button
+{
+  border-radius: 6px;
+  padding: .5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.variant-primary
+{
+  background-color: var(--primary);
+  transition: background-color .2s; 
+  &.button:active
+  {
+    background-color: var(--primary-active);
+    transition: background-color .2s;
+  }
+  &:disabled, &.disabled
+  {
+    background-color: var(--primary-disabled);
+  }
+}
+
+.variant-secondary
+{
+  color: var(--primary-text-color);
+  background-color: var(--secondary);
+  transition: background-color .2s;
+  &.button:active
+  {
+    background-color: var(--secondary-active);
+    transition: background-color .2s;
+  }
+  &.button:disabled, &.disabled
+  {
+    background-color: (--secondary-disabled);
+  }
+}
+
+.variant-primary, .variant-secondary
+{
+  &:disabled, &.disabled
+  {
+    color: var(--secondary-text-color);
+    & > svg:not([fill]) {
+      fill: var(--secondary-text-color);
+    }
+  }
+}
+
+
+.variant-tertiary
+{
+  color: var(--primary-text-color);
+  background-color: transparent;
+  transition: background-color .2s;
+  &.button:active
+  {
+    transition: background-color .2s;
+    background-color: var(--gray85);
+  }
+}
+
+.variant-accent
+{
+  color: var(--primary-text-color);
+  background-color: var(--accent);
+  transition: background-color .2s;
+  &.button:active
+  {
+    transition: background-color .2s;
+    background-color: var(--accent-active);
+  }
+  &.button:disabled, &.disabled
+  {
+    background-color: var(--accent-disabled);
+  }
+}
+
+.color-primary
+{
+  color: var(--primary-text-color);
+}
+
+.color-secondary
+{
+  color: var(--secondary-text-color);
+}
+
+.color-tertiary
+{
+  color: var(--tertiary-text-color);
+}
