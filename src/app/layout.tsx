@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import '@/shared/config/global.scss';
 import { Header } from "@/shared/ui/Header/Header";
+import { MainLayout } from "@/shared/layouts/MainLayout/MainLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,7 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header/>
-        {children}
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );
