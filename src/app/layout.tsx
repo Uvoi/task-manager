@@ -24,7 +24,8 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header/>
-        <MainLayout>{children}</MainLayout>
+        {/* <MainLayout>{children}</MainLayout> */}
+        {children}
       </body>
     </html>
   );

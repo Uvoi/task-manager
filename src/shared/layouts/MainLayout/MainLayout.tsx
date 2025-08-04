@@ -1,44 +1,25 @@
-import { Task } from "@/shared/ui/TaskList/model/types";
+'use client'
+
+import { Task } from "@/entities/Task/model/types";
 import { TaskList } from "@/shared/ui/TaskList/TaskList"
+import { TaskLayout } from "../TaskLayout/TaskLayout";
+import { useTaskStore } from "@/shared/store/useTaskStore";
 
 interface MainLayoutProps
 {
-    children: React.ReactNode
+    data?: Task[]
 }
 
-const DEBUG_TASKS: Task[] = [
-    {
-        title: "Sample Task 1",
-        description: "This is a sample task description.",
-        status: "todo",
-        dueDate: new Date(),
-        priority: "medium",
-        tags: ["urgent", "work"]
-    },
-    {
-        title: "Sample Task 2",
-        description: "This is another sample task description.",
-        status: "in-progress",
-        dueDate: new Date(),
-        priority: "high",
-        tags: ["feature", "development"]
-    },
-    {
-        title: "Sample Task 3",
-        description: "This is yet another sample task description.",
-        status: "done",
-        dueDate: new Date(),
-        priority: "low",
-        tags: ["testing", "review"]
-    }
-];
-
-export const MainLayout = ({children}: MainLayoutProps) =>
+export const MainLayout = ({data}: MainLayoutProps) =>
 {
+    const { selectedTaskId, addTask, deleteTask, getTask, selectTask, hasHydrated } = useTaskStore();
+    if (!hasHydrated) return null;
     return(
-        <div>
-            <TaskList elements={DEBUG_TASKS}/>
-            {children}
+        <div 
+            className="flex gap-4"
+        >
+            <TaskList elements={data} add={addTask} del={deleteTask} select={selectTask} selected={selectedTaskId}/>
+            {selectedTaskId!==null && <TaskLayout task={getTask(selectedTaskId)}/>}
         </div>
     )
 }
