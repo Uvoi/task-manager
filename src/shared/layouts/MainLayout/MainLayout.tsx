@@ -4,6 +4,9 @@ import { Task } from "@/entities/Task/model/types";
 import { TaskList } from "@/shared/ui/TaskList/TaskList"
 import { TaskLayout } from "../TaskLayout/TaskLayout";
 import { useTaskStore } from "@/shared/store/useTaskStore";
+import { useState } from "react";
+import { Button } from "@/shared/ui/Button/Button";
+import { LuSquareArrowRight } from "react-icons/lu";
 
 interface MainLayoutProps
 {
@@ -13,13 +16,56 @@ interface MainLayoutProps
 export const MainLayout = ({data}: MainLayoutProps) =>
 {
     const { selectedTaskId, addTask, deleteTask, getTask, selectTask, hasHydrated } = useTaskStore();
+    const [hide, setHide] = useState(false);
     if (!hasHydrated) return null;
     return(
         <div 
-            className="flex gap-4"
+            className="flex min-h-[91vh]"
         >
-            <TaskList elements={data} add={addTask} del={deleteTask} select={selectTask} selected={selectedTaskId}/>
-            {selectedTaskId!==null && <TaskLayout task={getTask(selectedTaskId)}/>}
+            {!hide ? 
+                <>
+                    <div className="flex-1 w-1/2">
+                        <TaskList elements={data} add={addTask} del={deleteTask} select={selectTask} selected={selectedTaskId} onHide={()=>setHide(true)} hideAccept={selectedTaskId!==null}/>
+                    </div>
+                    <div className="w-[1px] bg-gray-300 cursor-col-resize hover:bg-gray-400" 
+                        onMouseDown={(e) => {
+                            const startX = e.clientX;
+                            const leftPanel = e.currentTarget.previousElementSibling as HTMLElement;
+                            const startWidth = leftPanel.offsetWidth;
+                            
+                            const onMouseMove = (e: MouseEvent) => {
+                                const container = leftPanel.parentElement as HTMLElement;
+                                const containerWidth = container.offsetWidth;
+                                const newWidth = startWidth + (e.clientX - startX);
+                                const clampedWidth = Math.max(300, Math.min(containerWidth - 300, newWidth));
+                                leftPanel.style.width = clampedWidth + 'px';
+                                leftPanel.style.flex = 'none';
+                            };
+                            
+                            const onMouseUp = () => {
+                                document.removeEventListener('mousemove', onMouseMove);
+                                document.removeEventListener('mouseup', onMouseUp);
+                            };
+                            
+                            document.addEventListener('mousemove', onMouseMove);
+                            document.addEventListener('mouseup', onMouseUp);
+                        }}
+                    />
+                </>
+            : <div>
+                <Button variant="tertiary" 
+                    className="!px-2 h-full !bg-secondary !rounded-none" 
+                    onClick={()=>setHide(false)}
+                >
+                    <LuSquareArrowRight size={28}/>
+                </Button>
+            </div>
+            }
+            {selectedTaskId!==null && (
+                <div className="flex-1 w-1/2">
+                    <TaskLayout task={getTask(selectedTaskId)} onClose={()=>selectTask(null)}/>
+                </div>
+            )}
         </div>
     )
 }

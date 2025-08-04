@@ -28,7 +28,7 @@ export const Header = () =>
     console.log(TABS);
 
     return(
-        <div className="flex w-full justify-between items-center p-4">
+        <div className="flex w-full justify-between items-center p-4 h-[9vh]">
             <Link key={TABS[0].name} href={TABS[0].path} hoverStyle='border' 
                 className={`[&_svg]:!h-[1.5rem] [&_svg]:!w-[1.5rem] ${TABS[0].isActive  && 'text-accent'}`}
             >
