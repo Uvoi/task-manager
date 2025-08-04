@@ -27,12 +27,13 @@ const DEBUG_TASKS: Task[] = [
         tags: ["feature", "development"]
     },
     {
-        id: 7,
+        id: 8,
         title: "Sample Task 7",
         description: "This is yet another sample task description. This is yet another sample task description. This is yet another sample task description.",
         status: "todo",
         dueDate: "14.03.2025 14:35",
         creationDate: "17.03.2025 19:33",
+        updatedDate: "17.03.2025 19:33",
         priority: "low",
         tags: ["testing", "review"]
     }

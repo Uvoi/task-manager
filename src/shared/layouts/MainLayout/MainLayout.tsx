@@ -20,14 +20,14 @@ export const MainLayout = ({data}: MainLayoutProps) =>
     if (!hasHydrated) return null;
     return(
         <div 
-            className="flex min-h-[91vh]"
+            className="flex min-h-[91vh] overflow-hidden"
         >
             {!hide ? 
                 <>
-                    <div className="flex-1 w-1/2">
+                    <div className="w-4/10 grow-1">
                         <TaskList elements={data} add={addTask} del={deleteTask} select={selectTask} selected={selectedTaskId} onHide={()=>setHide(true)} hideAccept={selectedTaskId!==null}/>
                     </div>
-                    <div className="w-[1px] bg-gray-300 cursor-col-resize hover:bg-gray-400" 
+                    <div className="w-[2px] bg-gray-300 cursor-col-resize hover:bg-gray-400" 
                         onMouseDown={(e) => {
                             const startX = e.clientX;
                             const leftPanel = e.currentTarget.previousElementSibling as HTMLElement;
@@ -37,7 +37,7 @@ export const MainLayout = ({data}: MainLayoutProps) =>
                                 const container = leftPanel.parentElement as HTMLElement;
                                 const containerWidth = container.offsetWidth;
                                 const newWidth = startWidth + (e.clientX - startX);
-                                const clampedWidth = Math.max(300, Math.min(containerWidth - 300, newWidth));
+                                const clampedWidth = Math.max(450, Math.min(containerWidth - 450, newWidth));
                                 leftPanel.style.width = clampedWidth + 'px';
                                 leftPanel.style.flex = 'none';
                             };
@@ -62,7 +62,7 @@ export const MainLayout = ({data}: MainLayoutProps) =>
             </div>
             }
             {selectedTaskId!==null && (
-                <div className="flex-1 w-1/2">
+                <div className="w-6/10 grow-1 overflow-hidden min-w-0">
                     <TaskLayout task={getTask(selectedTaskId)} onClose={()=>selectTask(null)}/>
                 </div>
             )}

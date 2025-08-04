@@ -18,12 +18,12 @@ export const TaskList = ({elements, add, del, select, selected, onHide, hideAcce
 {
     return(
         <div
-            className="w-full flex flex-col bg-secondary p-6"
+            className="w-full flex flex-col bg-text-tertiary p-6 pt-3"
         >
             {hideAccept && <Button variant="tertiary" className="self-end !p-0 mb-4" onClick={onHide}><LuSquareArrowLeft size={28}/></Button>}
             {elements && elements.length > 0 ? (
                 <ul
-                    className="flex flex-col"
+                    className="flex flex-col gap-4"
                 >
                     {elements.map((element, index) => (
                         <li key={index}

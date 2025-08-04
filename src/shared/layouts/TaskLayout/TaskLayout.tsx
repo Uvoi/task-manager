@@ -1,4 +1,5 @@
 import { Task } from "@/entities/Task/model/types";
+import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
 import { Button } from "@/shared/ui/Button/Button";
 import { Chip } from "@/shared/ui/Chip/Chip";
 import { TextArea } from "@/shared/ui/TextArea/TextArea";
@@ -34,23 +35,9 @@ export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
     {
         setDescription(e.target.value)
     }
-    const getTaskPriorityColor = () =>
-    {
-        switch(task?.priority)
-        {
-            case "low":
-                return "success"
-            case "medium":
-                return "warning"
-            case "high":
-                return "error"
-            default:
-                return "tertiary"
-        }
-    }
     return(
         <div
-            className="w-full flex flex-col p-6 pt-3 h-full"
+            className="w-full flex flex-col p-6 pt-3 h-full overflow-hidden min-w-0"
         >
             <Button variant="tertiary" className="self-end !p-0 mb-4" onClick={onClose}><CgCloseR size={28}/></Button>
             <div className="flex flex-col gap-2">
@@ -78,7 +65,10 @@ export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
                             }}
                         />
                     )}
-                    <Chip value={task?.status} variant="filled" color="tertiary"/>
+                    <div className="flex gap-2">
+                        <Chip rounded={false} value={task?.priority} color={task?.priority && taskPriorityColor[task?.priority]} />
+                        <Chip value={task?.status} variant="filled" color={task?.status && taskStatusColor[task.status]}/>
+                    </div>
                 </div>
                 <div
                     className="flex justify-between"
@@ -87,9 +77,8 @@ export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
                         {task?.tags?.map((tag) => <Chip key={tag} value={tag}/>)}
                     </div>
                     <div
-                        className="flex gap-4"
+                        className="flex"
                     >
-                        <span>priority: <Chip rounded={false} value={task?.priority} color={getTaskPriorityColor()} /></span>
                         <span>{task?.dueDate}</span>
                     </div>
                 </div>
@@ -100,9 +89,9 @@ export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
                     <span>updated: {task?.updatedDate}</span>
                 </div>
             </div>
-            <div className="h-full">
+            <div className="h-full overflow-hidden">
                 <TextArea value={description} onChange={handleEditDescription} variant="clear"
-                    className="w-full h-full"
+                    className="w-full h-full resize-none"
                 />
             </div>
         </div>
