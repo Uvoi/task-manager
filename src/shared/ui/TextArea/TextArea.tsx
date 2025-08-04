@@ -1,14 +1,20 @@
-import { TextareaHTMLAttributes } from 'react';
+import { TextareaHTMLAttributes, forwardRef } from 'react';
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string;
+  variant?: "clear"
 }
 
-export const TextArea = ({ className = '', ...props }: TextAreaProps) => {
-  return (
-    <textarea
-      className={`resize-none border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
-      {...props}
-    />
-  );
-};
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  ({ className = '', variant, ...props }, ref) => {
+    return (
+      <textarea
+        ref={ref}
+        className={`resize-none p-2 focus:outline-none ${variant === "clear" ? "" : "border rounded-md focus:ring-1"} ${className}`}
+        {...props}
+      />
+    );
+  }
+);
+
+TextArea.displayName = 'TextArea';

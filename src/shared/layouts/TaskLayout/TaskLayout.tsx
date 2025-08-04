@@ -1,7 +1,8 @@
 import { Task } from "@/entities/Task/model/types";
 import { Button } from "@/shared/ui/Button/Button";
+import { Chip } from "@/shared/ui/Chip/Chip";
 import { TextArea } from "@/shared/ui/TextArea/TextArea";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CgCloseR } from "react-icons/cg";
 
 interface TaskLayoutProps
@@ -14,7 +15,17 @@ interface TaskLayoutProps
 export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
 {
     const [title, setTitle] = useState(task?.title)
+    const [editTitle, setEditTitle] = useState(false)
     const [description, setDescription] = useState(task?.description)
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    
+    useEffect(() => {
+        if (editTitle && textareaRef.current) {
+            const textarea = textareaRef.current;
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+    }, [editTitle]);
     const handleEditTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     {
         setTitle(e.target.value)
@@ -23,40 +34,74 @@ export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
     {
         setDescription(e.target.value)
     }
+    const getTaskPriorityColor = () =>
+    {
+        switch(task?.priority)
+        {
+            case "low":
+                return "success"
+            case "medium":
+                return "warning"
+            case "high":
+                return "error"
+            default:
+                return "tertiary"
+        }
+    }
     return(
         <div
-            className="w-full flex flex-col p-6"
+            className="w-full flex flex-col p-6 pt-3 h-full"
         >
             <Button variant="tertiary" className="self-end !p-0 mb-4" onClick={onClose}><CgCloseR size={28}/></Button>
-            <div>
+            <div className="flex flex-col gap-2">
                 <div
-                    className="flex"
+                    className="flex items-center relative"
                 >
-                    <TextArea value={title} onChange={handleEditTitle}
-                        className="w-full text-[1.2rem] h-[2.7rem]"
-                    />
-                    <span>{task?.status}</span>
+                    <p className="text-primary font-[700] w-full text-[1.2rem] cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis py-2" onClick={()=>setEditTitle(true)}>
+                        {title}
+                    </p>
+                    {editTitle && (
+                        <TextArea 
+                            ref={textareaRef}
+                            value={title} 
+                            onChange={handleEditTitle}
+                            className="absolute top-0 left-0 w-full text-[1.2rem] z-10 bg-bg-primary text-primary"
+                            onBlur={()=>setEditTitle(false)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    setEditTitle(false);
+                                } else if (e.key === 'Escape') {
+                                    e.preventDefault();
+                                    setEditTitle(false);
+                                }
+                            }}
+                        />
+                    )}
+                    <Chip value={task?.status} variant="filled" color="tertiary"/>
                 </div>
                 <div
                     className="flex justify-between"
                 >
-                    {task?.tags?.map((tag) => <span key={tag}>{tag}</span>)}
+                    <div className="flex gap-2 overflow-x-scroll">
+                        {task?.tags?.map((tag) => <Chip key={tag} value={tag}/>)}
+                    </div>
                     <div
-                        className="flex"
+                        className="flex gap-4"
                     >
-                        <span>{task?.priority}</span>
+                        <span>priority: <Chip rounded={false} value={task?.priority} color={getTaskPriorityColor()} /></span>
                         <span>{task?.dueDate}</span>
                     </div>
                 </div>
                 <div
-                    className="flex"
+                    className="flex text-[0.8rem] text-text-secondary justify-between"
                 >
-                    <span>{task?.creationDate}</span>
-                    <span>{task?.updatedDate}</span>
+                    <span>created: {task?.creationDate}</span>
+                    <span>updated: {task?.updatedDate}</span>
                 </div>
             </div>
-            <div>
-                <TextArea value={description} onChange={handleEditDescription}
+            <div className="h-full">
+                <TextArea value={description} onChange={handleEditDescription} variant="clear"
                     className="w-full h-full"
                 />
             </div>
