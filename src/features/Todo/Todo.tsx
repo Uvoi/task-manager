@@ -41,13 +41,11 @@ const DEBUG_TASKS: Task[] = [
 
 export const Todo = () =>
 {
-    const { tasks, selectedTaskId, addTask, deleteTask, getTask, getTasksByStatus, getTasksByTag, selectTask } = useTaskStore();
+    const { tasks, addTask, getTasksByStatus } = useTaskStore();
 
     useEffect(() => {
-        if (tasks.length === 0) {
-            DEBUG_TASKS.forEach(addTask);
-        }
-    }, []);
+        DEBUG_TASKS.forEach(addTask);
+    }, [addTask]);
 
     const todoTasks = getTasksByStatus("todo");
 

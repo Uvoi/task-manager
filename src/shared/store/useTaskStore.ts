@@ -28,11 +28,15 @@ export const useTaskStore = create<TaskStore>()(
             return exists ? state : { tasks: [...state.tasks, task] };
             }),
 
-        deleteTask: (id) =>
-            set((state) => ({
-            tasks: state.tasks.filter((task) => task.id !== id),
-            selectedTaskId: state.selectedTaskId === id ? null : state.selectedTaskId,
-            })),
+        deleteTask: (id) => {
+            set((state) => {
+              const newTasks = state.tasks.filter((task) => task.id !== id);
+              return {
+                tasks: newTasks,
+                selectedTaskId: state.selectedTaskId === id ? null : state.selectedTaskId,
+              };
+            });
+        },
 
         selectTask: (id) => set({ selectedTaskId: id }),
 

@@ -63,7 +63,7 @@ export const MainLayout = ({data}: MainLayoutProps) =>
             }
             {selectedTaskId!==null && (
                 <div className="w-6/10 grow-1 overflow-hidden min-w-0">
-                    <TaskLayout task={getTask(selectedTaskId)} onClose={()=>selectTask(null)}/>
+                    <TaskLayout task={getTask(selectedTaskId)} onClose={()=>selectTask(null)} onDelete={()=>deleteTask(selectedTaskId)}/>
                 </div>
             )}
         </div>

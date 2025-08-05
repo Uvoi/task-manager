@@ -5,15 +5,17 @@ import { Chip } from "@/shared/ui/Chip/Chip";
 import { TextArea } from "@/shared/ui/TextArea/TextArea";
 import { useState, useEffect, useRef } from "react";
 import { CgCloseR } from "react-icons/cg";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 interface TaskLayoutProps
 {
     task?: Task;
     onClose: () => void;
+    onDelete: () => void;
 }
 
 
-export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
+export const TaskLayout = ({task, onClose, onDelete}:TaskLayoutProps) =>
 {
     const [title, setTitle] = useState(task?.title)
     const [editTitle, setEditTitle] = useState(false)
@@ -31,15 +33,31 @@ export const TaskLayout = ({task, onClose}:TaskLayoutProps) =>
     {
         setTitle(e.target.value)
     }
+
     const handleEditDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     {
         setDescription(e.target.value)
     }
+
+    const handleClose = () =>
+    {
+        onClose();
+    }
+
+    const handleDelete = () =>
+    {
+        onDelete();
+        onClose();
+    }
+
     return(
         <div
             className="w-full flex flex-col p-6 pt-3 h-full overflow-hidden min-w-0"
         >
-            <Button variant="tertiary" className="self-end !p-0 mb-4" onClick={onClose}><CgCloseR size={28}/></Button>
+            <div className="mb-4 flex justify-between">
+                <Button variant="tertiary" className="!p-0" onClick={handleDelete}><RiDeleteBin2Line size={28}/></Button>
+                <Button variant="tertiary" className="!p-0" onClick={handleClose}><CgCloseR size={28}/></Button>
+            </div>
             <div className="flex flex-col gap-2">
                 <div
                     className="flex items-center relative"

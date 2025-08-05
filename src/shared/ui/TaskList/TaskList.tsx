@@ -1,5 +1,5 @@
 import { Task } from "@/entities/Task/model/types";
-import { TaskItem } from "./TaskItem";
+import { TaskListItem } from "./TaskListItem";
 import { LuSquareArrowLeft } from "react-icons/lu";
 import { Button } from "../Button/Button";
 
@@ -18,18 +18,18 @@ export const TaskList = ({elements, add, del, select, selected, onHide, hideAcce
 {
     return(
         <div
-            className="w-full flex flex-col bg-text-tertiary p-6 pt-3"
+            className="w-full flex flex-col bg-text-tertiary p-6 pt-3 min-h-[91vh]"
         >
             {hideAccept && <Button variant="tertiary" className="self-end !p-0 mb-4" onClick={onHide}><LuSquareArrowLeft size={28}/></Button>}
             {elements && elements.length > 0 ? (
                 <ul
-                    className="flex flex-col gap-4"
+                    className="flex flex-col gap-4 overflow-hidden" 
                 >
-                    {elements.map((element, index) => (
-                        <li key={index}
-                            className="w-full"
+                    {elements.map((element) => (
+                        <li key={element.id}
+                            className="w-full overflow-hidden rounded-xl"
                         >
-                            <TaskItem task={element} del={del} select={select} selected={selected}/>
+                            <TaskListItem task={element} del={del} select={select} selected={selected}/>
                         </li>
                     ))}
                 </ul>
