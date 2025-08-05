@@ -3,7 +3,7 @@
 import { Task } from "@/entities/Task/model/types";
 import { TaskList } from "@/shared/ui/TaskList/TaskList"
 import { TaskLayout } from "../TaskLayout/TaskLayout";
-import { useTaskStore } from "@/shared/store/useTaskStore";
+import { PageName, useTaskStore } from "@/shared/store/useTaskStore";
 import { useState } from "react";
 import { Button } from "@/shared/ui/Button/Button";
 import { LuSquareArrowRight } from "react-icons/lu";
@@ -15,7 +15,7 @@ interface MainLayoutProps
 
 export const MainLayout = ({data}: MainLayoutProps) =>
 {
-    const { selectedTaskId, addTask, deleteTask, getTask, selectTask, hasHydrated } = useTaskStore();
+    const { deleteTask, getTask, hasHydrated, getPageSelectedTaskId, setPageSelectedTask, currentPage } = useTaskStore();
     const [hide, setHide] = useState(false);
     if (!hasHydrated) return null;
     return(
@@ -25,7 +25,11 @@ export const MainLayout = ({data}: MainLayoutProps) =>
             {!hide ? 
                 <>
                     <div className="w-4/10 grow-1">
-                        <TaskList elements={data} add={addTask} del={deleteTask} select={selectTask} selected={selectedTaskId} onHide={()=>setHide(true)} hideAccept={selectedTaskId!==null}/>
+                        <TaskList 
+                            elements={data}  
+                            onHide={()=>setHide(true)} 
+                            hideAccept={currentPage ? getPageSelectedTaskId(currentPage)!==null : false}
+                        />
                     </div>
                     <div className="w-[2px] bg-gray-300 cursor-col-resize hover:bg-gray-400" 
                         onMouseDown={(e) => {
@@ -61,9 +65,9 @@ export const MainLayout = ({data}: MainLayoutProps) =>
                 </Button>
             </div>
             }
-            {selectedTaskId!==null && (
+            {getPageSelectedTaskId(currentPage) !== null && (
                 <div className="w-6/10 grow-1 overflow-hidden min-w-0">
-                    <TaskLayout task={getTask(selectedTaskId)} onClose={()=>selectTask(null)} onDelete={()=>deleteTask(selectedTaskId)}/>
+                    <TaskLayout task={getTask(getPageSelectedTaskId(currentPage)!)}/>
                 </div>
             )}
         </div>

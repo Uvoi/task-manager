@@ -39,6 +39,6 @@ const VARIANTS = {
 export const Chip = ({value, color='primary', variant='filled', rounded=true, startIcon, endIcon, className}:ChipProps) =>
 {
     return(
-        <span className={`${rounded && "rounded-xl"} px-2 ${VARIANTS[variant]} ${variant === 'outlined' ? BORDERS[color] : ''} ${variant === 'filled' ? COLORS[color] : ''} ${className}`}>{value}</span>
+        <span className={`${rounded && "rounded-xl"} whitespace-nowrap h-fit px-2 ${VARIANTS[variant]} ${variant === 'outlined' ? BORDERS[color] : ''} ${variant === 'filled' ? COLORS[color] : ''} ${className}`}>{value}</span>
     )
 }

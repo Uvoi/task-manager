@@ -1,5 +1,6 @@
 import { Task } from "@/entities/Task/model/types";
 import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
+import { useTaskStore } from "@/shared/store/useTaskStore";
 import { Button } from "@/shared/ui/Button/Button";
 import { Chip } from "@/shared/ui/Chip/Chip";
 import { TextArea } from "@/shared/ui/TextArea/TextArea";
@@ -10,16 +11,17 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 interface TaskLayoutProps
 {
     task?: Task;
-    onClose: () => void;
-    onDelete: () => void;
 }
 
 
-export const TaskLayout = ({task, onClose, onDelete}:TaskLayoutProps) =>
+export const TaskLayout = ({task}:TaskLayoutProps) =>
 {
-    const [title, setTitle] = useState(task?.title)
+    const { deleteTask, setPageSelectedTask, currentPage } = useTaskStore();
+    console.log(currentPage, task)
+    if (currentPage === null || task===undefined) return null;
+    const [title, setTitle] = useState(task.title)
     const [editTitle, setEditTitle] = useState(false)
-    const [description, setDescription] = useState(task?.description)
+    const [description, setDescription] = useState(task.description)
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     
     useEffect(() => {
@@ -41,13 +43,13 @@ export const TaskLayout = ({task, onClose, onDelete}:TaskLayoutProps) =>
 
     const handleClose = () =>
     {
-        onClose();
+        setPageSelectedTask(currentPage, null);
     }
 
     const handleDelete = () =>
     {
-        onDelete();
-        onClose();
+        deleteTask(task.id);
+        handleClose();
     }
 
     return(
@@ -84,27 +86,27 @@ export const TaskLayout = ({task, onClose, onDelete}:TaskLayoutProps) =>
                         />
                     )}
                     <div className="flex gap-2">
-                        <Chip rounded={false} value={task?.priority} color={task?.priority && taskPriorityColor[task?.priority]} />
-                        <Chip value={task?.status} variant="filled" color={task?.status && taskStatusColor[task.status]}/>
+                        <Chip rounded={false} value={task.priority} color={task.priority && taskPriorityColor[task.priority]} className="overflow-x-scroll"/>
+                        <Chip value={task.status} variant="filled" color={task.status && taskStatusColor[task.status]} className="overflow-x-scroll"/>
                     </div>
                 </div>
                 <div
                     className="flex justify-between"
                 >
                     <div className="flex gap-2 overflow-x-scroll">
-                        {task?.tags?.map((tag) => <Chip key={tag} value={tag}/>)}
+                        {task.tags?.map((tag) => <Chip key={tag} value={tag}/>)}
                     </div>
                     <div
                         className="flex"
                     >
-                        <span>{task?.dueDate}</span>
+                        <span>{task.dueDate}</span>
                     </div>
                 </div>
                 <div
                     className="flex text-[0.8rem] text-text-secondary justify-between"
                 >
-                    <span>created: {task?.creationDate}</span>
-                    <span>updated: {task?.updatedDate}</span>
+                    <span>created: {task.creationDate}</span>
+                    <span>updated: {task.updatedDate}</span>
                 </div>
             </div>
             <div className="h-full overflow-hidden">

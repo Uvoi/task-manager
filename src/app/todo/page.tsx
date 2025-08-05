@@ -1,4 +1,4 @@
-import { Todo } from "@/features/Todo/Todo"
+import { Todo } from "@/features/Todo"
 
 export default function Page ()
 {

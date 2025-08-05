@@ -2,7 +2,7 @@
 
 import { Task } from "@/entities/Task/model/types";
 import { MainLayout } from "@/shared/layouts/MainLayout/MainLayout"
-import { useTaskStore } from "@/shared/store/useTaskStore";
+import { PageName, useTaskStore } from "@/shared/store/useTaskStore";
 import { useEffect } from "react";
 
 const DEBUG_TASKS: Task[] = [
@@ -17,20 +17,20 @@ const DEBUG_TASKS: Task[] = [
         tags: ["urgent", "work"]
     },
     {
-        id: 1,
+        id: 4,
         title: "Sample Task 2",
         description: "This is another sample task description.",
-        status: "todo",
+        status: "in-progress",
         dueDate: "14.03.2025 14:35",
         creationDate: "17.03.2025 19:33",
         priority: "high",
         tags: ["feature", "development"]
     },
     {
-        id: 8,
+        id: 9,
         title: "Sample Task 7",
         description: "This is yet another sample task description. This is yet another sample task description. This is yet another sample task description.",
-        status: "todo",
+        status: "in-progress",
         dueDate: "14.03.2025 14:35",
         creationDate: "17.03.2025 19:33",
         updatedDate: "17.03.2025 19:33",
@@ -39,15 +39,21 @@ const DEBUG_TASKS: Task[] = [
     }
 ];
 
+const PAGE:PageName = "todo";
+
 export const Todo = () =>
 {
-    const { tasks, addTask, getTasksByStatus } = useTaskStore();
+    const { addTask, getTasksByStatus, setCurrentPage } = useTaskStore();
+
+    // useEffect(() => {
+    //     DEBUG_TASKS.forEach(addTask);
+    // }, [addTask]);
 
     useEffect(() => {
-        DEBUG_TASKS.forEach(addTask);
-    }, [addTask]);
+        setCurrentPage(PAGE);
+    }, [setCurrentPage]);
 
-    const todoTasks = getTasksByStatus("todo");
+    const todoTasks = getTasksByStatus(PAGE);
 
     return(
         <MainLayout data={todoTasks}/>

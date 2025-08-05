@@ -6,15 +6,11 @@ import { Button } from "../Button/Button";
 interface TaskListProps
 {
     elements?: Task[];
-    add: (task: Task) => void;
-    del: (id: number) => void;
-    select: (id: number) => void;
-    selected: number | null;
     onHide: () => void;
     hideAccept: boolean;
 }
 
-export const TaskList = ({elements, add, del, select, selected, onHide, hideAccept}:TaskListProps) =>
+export const TaskList = ({elements, onHide, hideAccept}:TaskListProps) =>
 {
     return(
         <div
@@ -29,7 +25,7 @@ export const TaskList = ({elements, add, del, select, selected, onHide, hideAcce
                         <li key={element.id}
                             className="w-full overflow-hidden rounded-xl"
                         >
-                            <TaskListItem task={element} del={del} select={select} selected={selected}/>
+                            <TaskListItem task={element}/>
                         </li>
                     ))}
                 </ul>

@@ -4,16 +4,16 @@ import { Chip } from "../Chip/Chip";
 import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { useState } from "react";
+import { useTaskStore } from "@/shared/store/useTaskStore";
 
 interface TaskListItemProps
 {
     task: Task;
-    del: (id: number) => void;
-    select: (id: number) => void;
-    selected: number | null;
 }
-export const TaskListItem = ({task, del, select, selected}:TaskListItemProps) =>
+export const TaskListItem = ({task}:TaskListItemProps) =>
 {
+    const { deleteTask, setPageSelectedTask, currentPage } = useTaskStore();
+    if (currentPage === null) return null;
     const [moveStyles, setMoveStyles] = useState("");
 
     const handleContextMenu = (e:React.MouseEvent) =>
@@ -24,7 +24,7 @@ export const TaskListItem = ({task, del, select, selected}:TaskListItemProps) =>
 
     const handleDelete = () =>
     {
-        del(task.id)
+        deleteTask(task.id)
     }
 
     return(
@@ -33,7 +33,7 @@ export const TaskListItem = ({task, del, select, selected}:TaskListItemProps) =>
                 onContextMenu={handleContextMenu}
                 variant="secondary"
                 className="flex flex-col gap-2 p-4 w-[100%] !items-stretch overflow-hidden rounded-xl"
-                onClick={()=>{select(task.id)}}
+                onClick={()=>{setPageSelectedTask(currentPage, task.id)}}
             >
                 <div
                     className="flex items-center justify-between"
