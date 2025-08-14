@@ -11,7 +11,7 @@ export const taskPriorityColor: Record<TaskPriority, "success" | "warning" | "er
 export const taskStatusColor: Record<TaskStatus, "success" | "warning" | "primary" | "tertiary"> =
 {
     todo: "tertiary",
-    "in-progress": "warning",
+    "in_progress": "warning",
     done: "success",
     unset: "primary"
 }

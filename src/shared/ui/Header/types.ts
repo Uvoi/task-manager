@@ -7,4 +7,4 @@ export interface Tabs {
 }
 
 export type TabNames = 'Home' | 'To Do' | 'In Progress' | 'Done' | 'Settings';
-export type TabPaths = '/' | '/todo' | '/in-progress' | '/done' | '/settings';
+export type TabPaths = '/' | '/todo' | '/in_progress' | '/done' | '/settings';

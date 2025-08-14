@@ -7,10 +7,11 @@ import { useEffect } from "react";
 const PAGE:PageName = "done"
 export const Done = () =>
 {
-    const { getTasksByStatus, setCurrentPage } = useTaskStore();
+    const { fetchTasks, getTasksByStatus, setCurrentPage } = useTaskStore();
 
     useEffect(() => {
         setCurrentPage(PAGE);
+        fetchTasks({status: PAGE});
     }, [setCurrentPage]);
     const todoTasks = getTasksByStatus(PAGE);
 

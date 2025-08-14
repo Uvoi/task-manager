@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation"
 let TABS:Tabs[] = [
     { name: 'Home', path: '/' , type: 'icon', icon:<BiHome/>},
     { name: 'To Do', path: '/todo' },
-    { name: 'In Progress', path: '/in-progress' },
+    { name: 'In Progress', path: '/in_progress' },
     { name: 'Done', path: '/done' },
     { name: 'Settings', path: '/settings', type: 'icon', icon:<CiSettings/>},
 ]
@@ -25,7 +25,6 @@ export const Header = () =>
                 return { ...tab, isActive: false };
         });
     }
-    console.log(TABS);
 
     return(
         <div className="flex w-full justify-between items-center p-4 h-[9vh]">
@@ -49,7 +48,14 @@ export const Header = () =>
                     </Link>
                 ))}
             </div>
-            <Link key={TABS[TABS.length-1].name} href={TABS[TABS.length-1].path} hoverStyle='border' className="[&_svg]:!h-[1.5rem] [&_svg]:!w-[1.5rem]">{TABS[TABS.length-1].icon}</Link>
+            <Link 
+                key={TABS[TABS.length-1].name} 
+                href={TABS[TABS.length-1].path} 
+                hoverStyle='border' 
+                className={`[&_svg]:!h-[1.5rem] [&_svg]:!w-[1.5rem] ${TABS[TABS.length-1].isActive  && 'text-accent'}`}
+            >
+                {TABS[TABS.length-1].icon}
+            </Link>
         </div>
     )
 }

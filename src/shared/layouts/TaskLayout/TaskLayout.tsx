@@ -1,5 +1,7 @@
+import { patchTask } from "@/entities/Task/api/tasks";
 import { Task } from "@/entities/Task/model/types";
 import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
+import { formatDate } from "@/shared/lib/common/transitions";
 import { useTaskStore } from "@/shared/store/useTaskStore";
 import { Button } from "@/shared/ui/Button/Button";
 import { Chip } from "@/shared/ui/Chip/Chip";
@@ -16,13 +18,26 @@ interface TaskLayoutProps
 
 export const TaskLayout = ({task}:TaskLayoutProps) =>
 {
-    const { deleteTask, setPageSelectedTask, currentPage } = useTaskStore();
-    console.log(currentPage, task)
+    const { deleteTask, setPageSelectedTask, currentPage, updateTask } = useTaskStore();
     if (currentPage === null || task===undefined) return null;
     const [title, setTitle] = useState(task.title)
     const [editTitle, setEditTitle] = useState(false)
     const [description, setDescription] = useState(task.description)
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const handleSave = async () =>
+    {
+        const newTitle = title !== task.title ? title : undefined;
+        const newDescription = description !== task.description ? description : undefined;
+        await patchTask({
+            id: task.id,
+            title: newTitle,
+            description: newDescription
+        }).then(()=>
+            updateTask({...task, title: newTitle ? newTitle : task.title, description: newDescription ? newDescription : task.description})
+        )
+        
+    }
     
     useEffect(() => {
         if (editTitle && textareaRef.current) {
@@ -31,6 +46,19 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
             textarea.setSelectionRange(textarea.value.length, textarea.value.length);
         }
     }, [editTitle]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.ctrlKey && e.code === 'KeyS') {
+                e.preventDefault();
+                handleSave();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [handleSave]);
+
     const handleEditTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     {
         setTitle(e.target.value)
@@ -58,6 +86,7 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
         >
             <div className="mb-4 flex justify-between">
                 <Button variant="tertiary" className="!p-0" onClick={handleDelete}><RiDeleteBin2Line size={28}/></Button>
+                <Button variant="secondary" color="success" className="!py-0" onClick={handleSave}>save</Button>
                 <Button variant="tertiary" className="!p-0" onClick={handleClose}><CgCloseR size={28}/></Button>
             </div>
             <div className="flex flex-col gap-2">
@@ -99,18 +128,18 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
                     <div
                         className="flex"
                     >
-                        <span>{task.dueDate}</span>
+                        <span>{formatDate(task.dueDate)}</span>
                     </div>
                 </div>
                 <div
                     className="flex text-[0.8rem] text-text-secondary justify-between"
                 >
-                    <span>created: {task.creationDate}</span>
-                    <span>updated: {task.updatedDate}</span>
+                    <span>created: {formatDate(task.creationDate)}</span>
+                    <span>updated: {formatDate(task.updatedDate)}</span>
                 </div>
             </div>
             <div className="h-full overflow-hidden">
-                <TextArea value={description} onChange={handleEditDescription} variant="clear"
+                <TextArea value={description || ""} onChange={handleEditDescription} variant="clear"
                     className="w-full h-full resize-none"
                 />
             </div>
