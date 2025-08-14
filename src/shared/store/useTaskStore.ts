@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Task, TaskStatus } from '@/entities/Task/model/types';
+import { Task, TaskFilter, TaskStatus } from '@/entities/Task/model/types';
+import { getTasks } from '@/entities/Task/api/tasks';
 
 interface TaskStore {
     tasks: Task[];
@@ -11,6 +12,8 @@ interface TaskStore {
     getTask: (id: number) => Task | undefined;
     getTasksByTag: (tag: string) => Task[];
     getTasksByStatus: (status: TaskStatus) => Task[];
+    updateTask: (task: Task) => void;
+    fetchTasks: (filters?: TaskFilter) => Promise<void>;
     hasHydrated: boolean;
     
     setHasHydrated: (state: boolean) => void;
@@ -26,7 +29,7 @@ interface PageState {
     taskOrder: number[];
 }
 
-export type PageName = 'todo' | 'in-progress' | 'done';
+export type PageName = 'todo' | 'in_progress' | 'done';
 
 export const useTaskStore = create<TaskStore>()(
   persist(
@@ -34,7 +37,7 @@ export const useTaskStore = create<TaskStore>()(
         tasks: [],
         pages: {
             todo: { selectedTaskId: null, taskOrder: [] },
-            'in-progress': { selectedTaskId: null, taskOrder: [] },
+            'in_progress': { selectedTaskId: null, taskOrder: [] },
             done: { selectedTaskId: null, taskOrder: [] },
         },
         currentPage: null,
@@ -59,6 +62,15 @@ export const useTaskStore = create<TaskStore>()(
         getTasksByTag: (tag: string) => get().tasks.filter((task) => task.tags?.includes(tag)),
 
         getTasksByStatus: (status: TaskStatus) => get().tasks.filter((task) => task.status === status),
+
+        updateTask: (updatedTask) => {
+            set({ tasks: get().tasks.map(t => t.id === updatedTask.id ? updatedTask : t) });
+        },
+
+        fetchTasks: async (filters) => {
+            const data = await getTasks(filters || {});
+            set({ tasks: data });
+        },
         
         hasHydrated: false,
         setHasHydrated: (state: boolean) => set({ hasHydrated: state }),
@@ -75,8 +87,10 @@ export const useTaskStore = create<TaskStore>()(
         getPageSelectedTaskId: (page: PageName | null) => {
             if (page === null) return null;
             const { pages } = get();
-            if (pages[page].selectedTaskId !== null) {
-                const task = get().getTask(pages[page].selectedTaskId);
+            const pageState = pages[page];
+            if (!pageState) return null;
+            if (pageState.selectedTaskId !== null) {
+                const task = get().getTask(pageState.selectedTaskId);
                 return task?.id ?? null;
             }
             return null;
