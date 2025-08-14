@@ -3,7 +3,7 @@ import cls from "./Button.module.scss";
 import classNames from "classnames";
 
 
-export type ButtonTextColor = "primary" | "secondary" | "tertiary";
+export type ButtonTextColor = "primary" | "secondary" | "tertiary" | "success" | "error" | "warning";
 export type ButtonVariant = "primary" | "secondary" | "tertiary" | "accent";
 export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 {

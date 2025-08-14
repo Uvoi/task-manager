@@ -5,6 +5,7 @@ import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { useState } from "react";
 import { useTaskStore } from "@/shared/store/useTaskStore";
+import { formatDate } from "@/shared/lib/common/transitions";
 
 interface TaskListItemProps
 {
@@ -31,7 +32,6 @@ export const TaskListItem = ({task}:TaskListItemProps) =>
         <div className={`w-[110%] flex bg-primary transition-all duration-300 ease-in-out ${moveStyles}`}>
             <Button
                 onContextMenu={handleContextMenu}
-                variant="secondary"
                 className="flex flex-col gap-2 p-4 w-[100%] !items-stretch overflow-hidden rounded-xl"
                 onClick={()=>{setPageSelectedTask(currentPage, task.id)}}
             >
@@ -47,7 +47,7 @@ export const TaskListItem = ({task}:TaskListItemProps) =>
                     <div className="flex gap-2 text-[0.8rem]">
                         {task.status && <Chip value={task.status} color={task.status && taskStatusColor[task.status]}/>}
                         <Chip rounded={false} value={task.priority} color={task.priority && taskPriorityColor[task.priority]}/>
-                        {task.dueDate && <span>{task.dueDate}</span>}
+                        {task.dueDate && <span>{formatDate(task.dueDate)}</span>}
                     </div>
                 </div>
                 {task.description && <p
@@ -56,11 +56,11 @@ export const TaskListItem = ({task}:TaskListItemProps) =>
                 <div
                     className="flex justify-between"
                 >
-                    {task.creationDate && <span className="text-text-secondary text-[14px]">created: {task.creationDate}</span>}
-                    {task.updatedDate && <span className="text-text-secondary text-[14px]">updated: {task.updatedDate}</span>}
+                    {task.creationDate && <span className="text-text-secondary text-[14px]">created: {formatDate(task.creationDate)}</span>}
+                    {task.updatedDate && <span className="text-text-secondary text-[14px]">updated: {formatDate(task.updatedDate)}</span>}
                 </div>
             </Button>
-            <div className="w-[10%] h-auto flex items-center justify-center">
+            <div className="w-[10%] h-auto flex items-center justify-center bg-secondary">
                 <Button variant="tertiary" className="!p-0" onClick={handleDelete}><RiDeleteBin2Line size={28}/></Button>
             </div>
         </div>

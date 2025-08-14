@@ -1,7 +1,7 @@
 .button
 {
   border-radius: 6px;
-  padding: .5rem;
+  padding: .2rem .7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,8 +24,8 @@
 
 .variant-secondary
 {
-  color: var(--primary-text-color);
-  background-color: var(--secondary);
+  color: var(--text-color);
+  border: 2px solid var(--secondary);
   transition: background-color .2s;
   &.button:active
   {
@@ -90,5 +90,74 @@
 
 .color-tertiary
 {
-  color: var(--tertiary-text-color);
+  color: var(--tertiary);
+}
+
+.color-success
+{
+  &.variant-secondary.button
+  {
+    border-color: var(--color-success);
+    &:active
+    {
+      background-color: var(--color-success);
+      transition: background-color .2s;
+    }
+  }
+  &.variant-primary.button
+  {
+    background-color: var(--color-success);
+    transition: opacity .2s;
+    &:active
+    {
+      transition: opacity .2s;
+      opacity: 0.8;
+    }
+  }
+}
+
+.color-error
+{
+  &.variant-secondary.button
+  {
+    border-color: var(--color-error);
+    &:active
+    {
+      background-color: var(--color-error);
+      transition: background-color .2s;
+    }
+  }
+  &.variant-primary.button
+  {
+    background-color: var(--color-error);
+    transition: opacity .2s;
+    &:active
+    {
+      transition: opacity .2s;
+      opacity: 0.8;
+    }
+  }
+}
+
+.color-warning
+{
+  &.variant-secondary.button
+  {
+    border-color: var(--color-warning);
+    &:active
+    {
+      background-color: var(--color-warning);
+      transition: background-color .2s;
+    }
+  }
+  &.variant-primary.button
+  {
+    background-color: var(--color-warning);
+    transition: opacity .2s;
+    &:active
+    {
+      transition: opacity .2s;
+      opacity: 0.8;
+    }
+  }
 }
