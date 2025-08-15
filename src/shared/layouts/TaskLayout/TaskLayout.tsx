@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { CgCloseR } from "react-icons/cg";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { patchTaskApi } from "@/entities/Task/api/tasks";
+import { deleteTaskApi, patchTaskApi } from "@/entities/Task/api/tasks";
 import { Task } from "@/entities/Task/model/types";
 import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
 import { formatDate } from "@/shared/lib/common/transitions";
@@ -84,8 +84,10 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
 
     const handleDelete = () =>
     {
-        deleteTask(task.id);
-        handleClose();
+        deleteTaskApi(task.id).then(()=>{
+            deleteTask(task.id);
+            handleClose();
+        })
     }
 
     return(

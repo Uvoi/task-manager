@@ -24,4 +24,12 @@ export const apiInstance = {
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         return res.json();
     },
+    delete: async <T>(url: string): Promise<T> => {
+        const res = await fetch(`${API_URL}${url}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        return res.json();
+    },
 };

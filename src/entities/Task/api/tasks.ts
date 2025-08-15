@@ -18,6 +18,9 @@ export const createTaskApi = (task: TaskCreateInput): Promise<Task> =>
     apiInstance.post<Task>('/tasks', task);
 
 export const patchTaskApi = (task: Partial<TaskUpdateClient>): Promise<Task> => {
-    console.log(task)
     return apiInstance.patch<Task>(`/tasks/${task.id}`, task);
+};
+
+export const deleteTaskApi = (id: number) => {
+    return apiInstance.delete(`/tasks/${id}`);
 };

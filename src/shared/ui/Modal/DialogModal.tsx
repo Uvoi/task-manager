@@ -1,4 +1,4 @@
-import { Button, ButtonTextColor } from "../Button/Button";
+import { Button, ButtonTextColor } from "../Button/Button/Button";
 import { Modal, ModalProps } from "./Modal"
 
 interface DialogModalProps extends ModalProps

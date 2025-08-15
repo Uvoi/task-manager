@@ -1,5 +1,5 @@
 import { prisma } from '@/shared/lib/prisma';
-import { Task, TaskCreateInput, TaskFilter, TaskUpdateClient } from './types';
+import { TaskCreateInput, TaskFilter, TaskUpdateClient } from './types';
 
 export async function getTasksServer() 
 {
@@ -56,4 +56,8 @@ export async function updateTaskServer(data: TaskUpdateClient) {
 }
 
 
-// export async function add 
+export async function deleteTaskServer(id: number) {
+  return prisma.task.delete({
+    where: { id },
+  });
+}

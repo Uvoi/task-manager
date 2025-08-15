@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useTaskStore } from "@/shared/store/useTaskStore";
 import { formatDate } from "@/shared/lib/common/transitions";
 import { DialogModal } from "../Modal/DialogModal";
+import { deleteTaskApi } from "@/entities/Task/api/tasks";
 
 interface TaskListItemProps
 {
@@ -29,7 +30,9 @@ export const TaskListItem = ({task}:TaskListItemProps) =>
 
     const handleDelete = () =>
     {
-        deleteTask(task.id)
+        deleteTaskApi(task.id).then(()=>{
+            deleteTask(task.id);
+        })
     }
 
     return(
