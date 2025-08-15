@@ -5,7 +5,7 @@ import { TaskList } from "@/shared/ui/TaskList/TaskList"
 import { TaskLayout } from "../TaskLayout/TaskLayout";
 import { useTaskStore } from "@/shared/store/useTaskStore";
 import { useState, useEffect } from "react";
-import { Button } from "@/shared/ui/Button/Button";
+import { Button } from "@/shared/ui/Button/Button/Button";
 import { LuSquareArrowRight } from "react-icons/lu";
 
 interface MainLayoutProps

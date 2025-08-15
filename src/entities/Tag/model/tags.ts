@@ -1,5 +1,5 @@
 import { prisma } from "@/shared/lib/prisma";
 
-export async function getTags() { 
+export async function getTagsServer() { 
     return prisma.tag.findMany();
 }

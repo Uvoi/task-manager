@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createTask, getTasksFiltered, updateTask } from '@/entities/Task/model/tasks';
+import { createTaskServer, getTasksFilteredServer, updateTaskServer } from '@/entities/Task/model/tasks';
 import { TaskCreateInput, TaskStatus } from '@/entities/Task/model/types';
 import { TaskPriority } from '@prisma/client';
 
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
         tagIds: tagIds.length ? tagIds : undefined,
     };
 
-    const tasks = await getTasksFiltered(filters);
+    const tasks = await getTasksFilteredServer(filters);
     return NextResponse.json(tasks);
 }
 
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     try {
         const data: TaskCreateInput = await req.json();
 
-        const task = await createTask(data);
+        const task = await createTaskServer(data);
 
         return NextResponse.json(task);
     } catch (error) {

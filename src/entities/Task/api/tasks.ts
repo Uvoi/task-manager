@@ -1,7 +1,7 @@
 import { apiInstance } from "@/shared/api/apiInstance";
 import { Task, TaskCreateInput, TaskFilter, TaskUpdateClient } from "../model/types";
 
-export const getTasks = (filters?: TaskFilter): Promise<Task[]> => {
+export const getTasksApi = (filters?: TaskFilter): Promise<Task[]> => {
     const query = new URLSearchParams();
 
     if (filters?.status) query.append('status', filters.status);
@@ -11,13 +11,13 @@ export const getTasks = (filters?: TaskFilter): Promise<Task[]> => {
 
     const queryString = query.toString() ? `?${query.toString()}` : '';
 
-    return apiInstance.get(`/tasks${queryString}`);
+    return apiInstance.get<Task[]>(`/tasks${queryString}`);
 };
 
-export const createTaskApi = (task: TaskCreateInput) =>
-    apiInstance.post('/tasks', task);
+export const createTaskApi = (task: TaskCreateInput): Promise<Task> =>
+    apiInstance.post<Task>('/tasks', task);
 
-export const patchTask = (task: Partial<TaskUpdateClient>) => {
+export const patchTaskApi = (task: Partial<TaskUpdateClient>): Promise<Task> => {
     console.log(task)
-    return apiInstance.patch(`/tasks/${task.id}`, task);
+    return apiInstance.patch<Task>(`/tasks/${task.id}`, task);
 };

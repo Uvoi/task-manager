@@ -1,11 +1,14 @@
+'use client'
+
 import { Task } from "@/entities/Task/model/types";
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button/Button";
 import { Chip } from "../Chip/Chip";
 import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { useState } from "react";
 import { useTaskStore } from "@/shared/store/useTaskStore";
 import { formatDate } from "@/shared/lib/common/transitions";
+import { DialogModal } from "../Modal/DialogModal";
 
 interface TaskListItemProps
 {
@@ -14,6 +17,7 @@ interface TaskListItemProps
 export const TaskListItem = ({task}:TaskListItemProps) =>
 {
     const { deleteTask, setPageSelectedTask, currentPage } = useTaskStore();
+    const [openDeleteModal, setOpenDeleteModal] = useState(false)
     if (currentPage === null) return null;
     const [moveStyles, setMoveStyles] = useState("");
 
@@ -61,8 +65,18 @@ export const TaskListItem = ({task}:TaskListItemProps) =>
                 </div>
             </Button>
             <div className="w-[10%] h-auto flex items-center justify-center bg-secondary">
-                <Button variant="tertiary" className="!p-0" onClick={handleDelete}><RiDeleteBin2Line size={28}/></Button>
+                <Button variant="tertiary" className="!p-0" onClick={()=>setOpenDeleteModal(true)}><RiDeleteBin2Line size={28}/></Button>
             </div>
+            <DialogModal 
+                onClose={()=>setOpenDeleteModal(false)} 
+                isOpen={openDeleteModal} 
+                yesText="Yes" 
+                noText="Cancel" 
+                yesFunc={handleDelete}
+                yesColor="error"
+            >
+                Do you really want to delete the task?
+            </DialogModal>
         </div>
     )
 }

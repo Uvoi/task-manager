@@ -1,14 +1,15 @@
-import { patchTask } from "@/entities/Task/api/tasks";
+import { useState, useEffect, useRef } from "react";
+import { CgCloseR } from "react-icons/cg";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import { patchTaskApi } from "@/entities/Task/api/tasks";
 import { Task } from "@/entities/Task/model/types";
 import { taskPriorityColor, taskStatusColor } from "@/features/Task/lib/Task";
 import { formatDate } from "@/shared/lib/common/transitions";
 import { useTaskStore } from "@/shared/store/useTaskStore";
-import { Button } from "@/shared/ui/Button/Button";
+import { Button } from "@/shared/ui/Button/Button/Button";
 import { Chip } from "@/shared/ui/Chip/Chip";
+import { DialogModal } from "@/shared/ui/Modal/DialogModal";
 import { TextArea } from "@/shared/ui/TextArea/TextArea";
-import { useState, useEffect, useRef } from "react";
-import { CgCloseR } from "react-icons/cg";
-import { RiDeleteBin2Line } from "react-icons/ri";
 
 interface TaskLayoutProps
 {
@@ -22,14 +23,21 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
     if (currentPage === null || task===undefined) return null;
     const [title, setTitle] = useState(task.title)
     const [editTitle, setEditTitle] = useState(false)
-    const [description, setDescription] = useState(task.description)
+    const [description, setDescription] = useState(task.description);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useEffect(() => {
+        setTitle(task.title)
+        setDescription(task.description)
+    }, [task])
+    
 
     const handleSave = async () =>
     {
         const newTitle = title !== task.title ? title : undefined;
         const newDescription = description !== task.description ? description : undefined;
-        await patchTask({
+        await patchTaskApi({
             id: task.id,
             title: newTitle,
             description: newDescription
@@ -85,7 +93,7 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
             className="w-full flex flex-col p-6 pt-3 h-full overflow-hidden min-w-0"
         >
             <div className="mb-4 flex justify-between">
-                <Button variant="tertiary" className="!p-0" onClick={handleDelete}><RiDeleteBin2Line size={28}/></Button>
+                <Button variant="tertiary" className="!p-0" onClick={()=>setOpenDeleteModal(true)}><RiDeleteBin2Line size={28}/></Button>
                 <Button variant="secondary" color="success" className="!py-0" onClick={handleSave}>save</Button>
                 <Button variant="tertiary" className="!p-0" onClick={handleClose}><CgCloseR size={28}/></Button>
             </div>
@@ -143,6 +151,16 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
                     className="w-full h-full resize-none"
                 />
             </div>
+            <DialogModal 
+                onClose={()=>setOpenDeleteModal(false)} 
+                isOpen={openDeleteModal} 
+                yesText="Yes" 
+                noText="Cancel" 
+                yesFunc={handleDelete}
+                yesColor="error"
+            >
+                Do you really want to delete the task?
+            </DialogModal>
         </div>
     )
 }

@@ -1,12 +1,12 @@
 import { prisma } from '@/shared/lib/prisma';
 import { Task, TaskCreateInput, TaskFilter, TaskUpdateClient } from './types';
 
-export async function getTasks() 
+export async function getTasksServer() 
 {
     return prisma.task.findMany();
 }
 
-export async function getTasksFiltered(filters: TaskFilter) {
+export async function getTasksFilteredServer(filters: TaskFilter) {
   return prisma.task.findMany({
     where: {
       ...(filters.status && { status: filters.status }),
@@ -23,7 +23,7 @@ export async function getTasksFiltered(filters: TaskFilter) {
   });
 }
 
-export async function createTask(data: TaskCreateInput) {
+export async function createTaskServer(data: TaskCreateInput) {
     return prisma.task.create({
         data: {
             title: data.title,
@@ -43,7 +43,7 @@ export async function createTask(data: TaskCreateInput) {
     });
 }
 
-export async function updateTask(data: TaskUpdateClient) {
+export async function updateTaskServer(data: TaskUpdateClient) {
   const { id, tags, ...rest } = data;
 
   return prisma.task.update({
@@ -54,3 +54,6 @@ export async function updateTask(data: TaskUpdateClient) {
     }
   });
 }
+
+
+// export async function add 

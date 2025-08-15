@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { getTags } from '@/entities/Tag/model/tags';
+import { getTagsServer } from '@/entities/Tag/model/tags';
 
 export async function GET() {
     try {
-        const tags = await getTags();
+        const tags = await getTagsServer();
         return NextResponse.json(tags);
     } catch (error) {
         console.error(error);

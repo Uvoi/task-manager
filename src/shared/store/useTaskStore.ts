@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Task, TaskFilter, TaskStatus } from '@/entities/Task/model/types';
-import { getTasks } from '@/entities/Task/api/tasks';
+import { getTasksApi } from '@/entities/Task/api/tasks';
 
 interface TaskStore {
     tasks: Task[];
@@ -68,7 +68,7 @@ export const useTaskStore = create<TaskStore>()(
         },
 
         fetchTasks: async (filters) => {
-            const data = await getTasks(filters || {});
+            const data = await getTasksApi(filters || {});
             set({ tasks: data });
         },
         
