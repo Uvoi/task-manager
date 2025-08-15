@@ -1,10 +1,10 @@
 import {ButtonHTMLAttributes, DetailedHTMLProps} from "react";
-import cls from "./Button.module.scss";
+import cls from "../Button.module.scss";
 import classNames from "classnames";
 
 
-export type ButtonTextColor = "primary" | "secondary" | "tertiary" | "success" | "error" | "warning";
-export type ButtonVariant = "primary" | "secondary" | "tertiary" | "accent";
+export type ButtonTextColor = "primary" | "secondary" | "tertiary" | "success" | "error" | "warning" | "accent";
+export type ButtonVariant = "primary" | "secondary" | "tertiary";
 export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 {
     variant?: ButtonVariant,

@@ -2,7 +2,7 @@ import { DetailedHTMLProps } from "react";
 import classNames from "classnames";
 import Link from "next/link";
 import { ButtonTextColor, ButtonVariant } from "../Button/Button";
-import cls from "./ButtonLink.module.scss";
+import cls from "../Button.module.scss";
 
 
 export interface ButtonLinkProps extends DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>

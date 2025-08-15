@@ -62,36 +62,7 @@
   }
 }
 
-.variant-accent
-{
-  color: var(--primary-text-color);
-  background-color: var(--accent);
-  transition: background-color .2s;
-  &.button:active
-  {
-    transition: background-color .2s;
-    background-color: var(--accent-active);
-  }
-  &.button:disabled, &.disabled
-  {
-    background-color: var(--accent-disabled);
-  }
-}
 
-.color-primary
-{
-  color: var(--primary-text-color);
-}
-
-.color-secondary
-{
-  color: var(--secondary-text-color);
-}
-
-.color-tertiary
-{
-  color: var(--tertiary);
-}
 
 .color-success
 {
@@ -153,6 +124,99 @@
   &.variant-primary.button
   {
     background-color: var(--color-warning);
+    transition: opacity .2s;
+    &:active
+    {
+      transition: opacity .2s;
+      opacity: 0.8;
+    }
+  }
+}
+
+.color-accent
+{
+  &.variant-secondary.button
+  {
+    border-color: var(--color-accent);
+    &:active
+    {
+      background-color: var(--color-accent);
+      transition: background-color .2s;
+    }
+  }
+  &.variant-primary.button
+  {
+    background-color: var(--color-accent);
+    transition: opacity .2s;
+    color: var(--gray100);
+    &:active
+    {
+      transition: opacity .2s;
+      opacity: 0.8;
+    }
+  }
+}
+
+.color-primary
+{
+  &.variant-secondary.button
+  {
+    border-color: var(--color-primary);
+    &:active
+    {
+      background-color: var(--color-primary);
+      transition: background-color .2s;
+    }
+  }
+  &.variant-primary.button
+  {
+    background-color: var(--color-primary);
+    transition: opacity .2s;
+    &:active
+    {
+      transition: opacity .2s;
+      opacity: 0.8;
+    }
+  }
+}
+
+.color-secondary
+{
+  &.variant-secondary.button
+  {
+    border-color: var(--color-secondary);
+    &:active
+    {
+      background-color: var(--color-secondary);
+      transition: background-color .2s;
+    }
+  }
+  &.variant-primary.button
+  {
+    background-color: var(--color-secondary);
+    transition: opacity .2s;
+    &:active
+    {
+      transition: opacity .2s;
+      opacity: 0.8;
+    }
+  }
+}
+
+.color-tertiary
+{
+  &.variant-secondary.button
+  {
+    border-color: var(--color-tertiary);
+    &:active
+    {
+      background-color: var(--color-tertiary);
+      transition: background-color .2s;
+    }
+  }
+  &.variant-primary.button
+  {
+    background-color: var(--color-tertiary);
     transition: opacity .2s;
     &:active
     {
