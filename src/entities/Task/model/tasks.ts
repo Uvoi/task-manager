@@ -28,9 +28,9 @@ export async function createTaskServer(data: TaskCreateInput) {
         data: {
             title: data.title,
             description: data.description,
-            dueDate: new Date(data.dueDate),
+            dueDate: data.dueDate,
             priority: data.priority || 'unset',
-            status: data.status || 'todo',
+            status: data.status || 'unset',
             creatorId: data.creatorId,
             parentTaskId: data.parentTaskId,
             tags: data.tagIds
@@ -50,7 +50,7 @@ export async function updateTaskServer(data: TaskUpdateClient) {
     where: { id },
     data: {
       ...rest,
-      ...(tags ? { tags: { set: tags.map(tagId => ({ id: tagId })) } } : {}),
+      ...(tags ? { tags: { set: tags.map(tagId => ({ id: tagId })) } } : {})
     }
   });
 }

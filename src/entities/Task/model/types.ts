@@ -4,7 +4,7 @@ export type Task = {
     description: string | null;
     status: TaskStatus;
     creationDate: string;
-    dueDate: string;
+    dueDate?: string;
     updatedDate: string;
     priority: TaskPriority;
     tags?: string[];
@@ -24,7 +24,7 @@ export interface TaskFilter {
 export interface TaskCreateInput {
     title: string;
     description?: string;
-    dueDate: string;
+    dueDate?: string;
     priority?: TaskPriority;
     status?: TaskStatus;
     creatorId: number;

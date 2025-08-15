@@ -10,8 +10,10 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json(updatedTask);
 }
 
-export async function DELETE({ params }: { params: { id: string } }) 
-{
+export async function DELETE(
+    req: Request,
+    { params }: { params: { id: string } }
+    ) {
     const taskId = Number(params.id);
 
     if (isNaN(taskId)) {

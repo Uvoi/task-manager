@@ -25,7 +25,6 @@ export const TaskList = ({elements, onHide, hideAccept}:TaskListProps) =>
             title: "", 
             description: "", 
             status: currentPage ? currentPage : 'unset',
-            dueDate: new Date().toISOString(), 
             creatorId: 0
         }
 

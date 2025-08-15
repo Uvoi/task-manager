@@ -40,9 +40,10 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
         await patchTaskApi({
             id: task.id,
             title: newTitle,
-            description: newDescription
-        }).then(()=>
-            updateTask({...task, title: newTitle ? newTitle : task.title, description: newDescription ? newDescription : task.description})
+            description: newDescription,
+            updatedDate: new Date().toISOString(),
+        }).then((task: Task)=>
+            updateTask(task)
         )
         
     }
@@ -103,15 +104,19 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
                 <div
                     className="flex items-center relative"
                 >
-                    <p className="text-primary font-[700] w-full text-[1.2rem] cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis py-2" onClick={()=>setEditTitle(true)}>
-                        {title}
+                    <p 
+                        className="text-primary font-[700] w-full text-[1.2rem] cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis py-2" 
+                        onClick={()=>setEditTitle(true)}
+                    >
+                        {title ? title : <span className="text-gray30">Title</span>}
                     </p>
                     {editTitle && (
                         <TextArea 
                             ref={textareaRef}
-                            value={title} 
+                            value={title}
                             onChange={handleEditTitle}
                             className="absolute top-0 left-0 w-full text-[1.2rem] z-10 bg-bg-primary text-primary"
+                            placeholder="Title"
                             onBlur={()=>setEditTitle(false)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -149,8 +154,12 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
                 </div>
             </div>
             <div className="h-full overflow-hidden">
-                <TextArea value={description || ""} onChange={handleEditDescription} variant="clear"
+                <TextArea 
+                    value={description || ""} 
+                    onChange={handleEditDescription} 
+                    variant="clear"
                     className="w-full h-full resize-none"
+                    placeholder="Description"
                 />
             </div>
             <DialogModal 

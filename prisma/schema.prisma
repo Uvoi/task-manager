@@ -28,7 +28,7 @@ model task {
   description   String?
   status        TaskStatus
   creationDate  DateTime    @default(now())
-  dueDate       DateTime
+  dueDate       DateTime?
   updatedDate   DateTime    @default(now())
   priority      TaskPriority
   tags          tag[]       @relation("TaskTags")
