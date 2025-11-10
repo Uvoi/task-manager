@@ -5,9 +5,10 @@ export interface ModalProps {
     onClose: () => void;
     children: React.ReactNode;
     className?: string;
+    title?: string;
 }
 
-export const Modal = ({ isOpen, onClose, children, className = '' }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, children, className = '', title }: ModalProps) => {
     const [isVisible, setIsVisible] = useState(false);
     const [shouldRender, setShouldRender] = useState(false);
 
@@ -34,9 +35,10 @@ export const Modal = ({ isOpen, onClose, children, className = '' }: ModalProps)
             isVisible ? 'opacity-100' : 'opacity-0'
         }`}>
             <div className="fixed inset-0 bg-[#00000069]" onClick={onClose} />
-            <div className={`relative bg-bg-secondary rounded-lg p-6 max-w-md w-full mx-4 transform transition-all duration-300 ${
+            <div className={`flex flex-col relative bg-bg-secondary rounded-lg p-6 pt-0 max-w-md w-full mx-4 transform transition-all duration-300 ${
                 isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
             } ${className}`}>
+                <p className='self-center text-xl mt-2 mb-4'>{title}</p>
                 {children}
             </div>
         </div>
