@@ -49,7 +49,9 @@ export const TaskListItem = ({task}:TaskListItemProps) =>
                         {task.title && <p className="font-[700]">{task.title}</p>}
                         {task.tags && <div 
                             className="flex gap-2"
-                        >{task.tags.map((tag) => <Chip className="text-[0.8rem]" key={tag} value={tag} variant='outlined' color="tertiary"/>)}</div>}
+                        >
+                            {task.tags.map((tag) => <Chip className="text-[0.8rem]" key={tag.id} value={tag.name} variant='outlined' color={tag.hex}/>)}
+                        </div>}
                     </div>
                     <div className="flex gap-2 text-[0.8rem]">
                         {task.status && <Chip value={task.status} color={task.status && taskStatusColor[task.status]}/>}

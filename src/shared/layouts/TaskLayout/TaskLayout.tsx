@@ -10,6 +10,7 @@ import { Button } from "@/shared/ui/Button/Button/Button";
 import { Chip } from "@/shared/ui/Chip/Chip";
 import { DialogModal } from "@/shared/ui/Modal/DialogModal";
 import { TextArea } from "@/shared/ui/TextArea/TextArea";
+import { TagsList } from "@/features/Tag/ui/TagsList";
 
 interface TaskLayoutProps
 {
@@ -19,17 +20,19 @@ interface TaskLayoutProps
 
 export const TaskLayout = ({task}:TaskLayoutProps) =>
 {
-    const { deleteTask, setPageSelectedTask, currentPage, updateTask } = useTaskStore();
+    const { deleteTask, setPageSelectedTask, currentPage, updateTask, fetchTasks } = useTaskStore();
     if (currentPage === null || task===undefined) return null;
     const [title, setTitle] = useState(task.title)
     const [editTitle, setEditTitle] = useState(false)
     const [description, setDescription] = useState(task.description);
+    const [selectedTagIds, setSelectedTagIds] = useState<number[]>(task.tags?.map(tag => tag.id) || []);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         setTitle(task.title)
         setDescription(task.description)
+        setSelectedTagIds(task.tags?.map(tag => tag.id) || [])
     }, [task])
     
 
@@ -37,13 +40,20 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
     {
         const newTitle = title !== task.title ? title : undefined;
         const newDescription = description !== task.description ? description : undefined;
+        const originalTagIds = task.tags?.map(tag => tag.id) || [];
+        const tagsChanged = JSON.stringify(selectedTagIds.sort()) !== JSON.stringify(originalTagIds.sort());
+        
         await patchTaskApi({
             id: task.id,
             title: newTitle,
             description: newDescription,
+            tags: tagsChanged ? selectedTagIds : undefined,
             updatedDate: new Date().toISOString(),
         }).then((task: Task)=>
-            updateTask(task)
+            {
+                updateTask(task);
+                fetchTasks();
+            }
         )
         
     }
@@ -129,16 +139,31 @@ export const TaskLayout = ({task}:TaskLayoutProps) =>
                             }}
                         />
                     )}
-                    <div className="flex gap-2">
-                        <Chip rounded={false} value={task.priority} color={task.priority && taskPriorityColor[task.priority]} className="overflow-x-scroll"/>
-                        <Chip value={task.status} variant="filled" color={task.status && taskStatusColor[task.status]} className="overflow-x-scroll"/>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex gap-2 justify-end">
+                            <Chip rounded={false} value={task.priority} color={task.priority && taskPriorityColor[task.priority]} className="overflow-x-scroll"/>
+                            <Chip value={task.status} variant="filled" color={task.status && taskStatusColor[task.status]} className="overflow-x-scroll"/>
+                        </div>
+                        <div>
+                            <TagsList 
+                                show={selectedTagIds} 
+                                className="w-[max-content]" 
+                                onTagSelect={(tagId) => {
+                                    setSelectedTagIds(prev => 
+                                        prev.includes(tagId) 
+                                            ? prev.filter(id => id !== tagId)
+                                            : [...prev, tagId]
+                                    )
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div
                     className="flex justify-between"
                 >
                     <div className="flex gap-2 overflow-x-scroll">
-                        {task.tags?.map((tag) => <Chip key={tag} value={tag}/>)}
+
                     </div>
                     <div
                         className="flex"

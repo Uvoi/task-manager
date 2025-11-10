@@ -7,7 +7,7 @@ export async function getTasksServer()
 }
 
 export async function getTasksFilteredServer(filters: TaskFilter) {
-  return prisma.task.findMany({
+  return await prisma.task.findMany({
     where: {
       ...(filters.status && { status: filters.status }),
       ...(filters.priority && { priority: filters.priority }),
@@ -19,6 +19,9 @@ export async function getTasksFilteredServer(filters: TaskFilter) {
           },
         },
       }),
+    },
+    include: {
+      tags: true,
     },
   });
 }
@@ -51,7 +54,10 @@ export async function updateTaskServer(data: TaskUpdateClient) {
     data: {
       ...rest,
       ...(tags ? { tags: { set: tags.map(tagId => ({ id: tagId })) } } : {})
-    }
+    },
+    include: {
+      tags: true,
+    },
   });
 }
 
