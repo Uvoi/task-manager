@@ -39,10 +39,20 @@ model task {
   creator       user        @relation("Creator", fields: [creatorId], references: [id])
 }
 
+model color {
+  id        Int     @id @default(autoincrement())
+  colorName String  @db.VarChar(32) @unique
+  hex       String  @db.Char(6)
+  tags      tag[]
+}
+
 model tag {
-  id    Int     @id @default(autoincrement())
-  name  String  @db.VarChar(32)   @unique 
-  tasks task[]  @relation("TaskTags")
+  id      Int     @id @default(autoincrement())
+  name    String  @db.VarChar(32) @unique 
+  hex     String? @db.Char(6)
+  colorId Int?
+  color   color?  @relation(fields: [colorId], references: [id])
+  tasks   task[]  @relation("TaskTags")
 }
 
 model user {

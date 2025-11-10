@@ -22,17 +22,24 @@ async function main() {
       surname: 'Johnson',
     },
   });
+  
+
+  const colorPrimary = await prisma.color.upsert({
+    where: { colorName: 'primary' },
+    update: {},
+    create: { colorName: 'primary', hex: 'ff0000' },
+  });
 
   const tagUrgent = await prisma.tag.upsert({
     where: { name: 'urgent' },
     update: {},
-    create: { name: 'urgent' },
+    create: { name: 'urgent', hex: "123cef" },
   });
 
   const tagWork = await prisma.tag.upsert({
     where: { name: 'work' },
     update: {},
-    create: { name: 'work' },
+    create: { name: 'work', colorId: 0 },
   });
 
   await prisma.task.create({
