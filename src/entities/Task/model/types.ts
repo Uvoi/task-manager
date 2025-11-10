@@ -1,3 +1,5 @@
+import { Tag } from "@/entities/Tag/model/types";
+
 export type Task = {
     id: number;
     title: string;
@@ -7,7 +9,7 @@ export type Task = {
     dueDate?: string;
     updatedDate: string;
     priority: TaskPriority;
-    tags?: string[];
+    tags?: Tag[];
 }
 
 export type TaskStatus = "todo" | "in_progress" | "done" | "unset";
